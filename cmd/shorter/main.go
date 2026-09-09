@@ -2,7 +2,7 @@ package main
 
 import (
 	"context"
-	"fmt"
+	"flag"
 	"os"
 	"os/signal"
 	"syscall"
@@ -14,11 +14,33 @@ import (
 	"github.com/TiJon8/shorter-go/pkg/storage"
 )
 
-
+var (
+	useEnv = flag.Bool("use-env", false, "if true command will use .env file")
+	addr = flag.String("addr", "", "server listening on [:addr]")
+	storagePath = flag.String("storage-path", "./database.db", "path for sqlite .db file")
+	logLevel = flag.String("log-level", "info", "minimum level for logger")
+	env = flag.String("env", "dev", "env mode")
+)
 
 func main() {
-	appCfg := config.AppConfigMust()
-	fmt.Println(appCfg)
+	flag.Parse()
+
+	appCfg := new(config.AppConfig)
+	serverCfg := new(config.ServerConfig)
+	if *useEnv {
+		appCfg = config.AppConfigMust()
+		serverCfg = config.ServerConfigMust()
+	} else {
+		if *addr == "" {
+			flag.Usage()
+			return
+		}
+		serverCfg.Addr = *addr
+		appCfg.StoragePath = *storagePath
+		appCfg.LogLevel = *logLevel
+		appCfg.Env = *env
+	}
+
 	logger := log.NewLogger(appCfg.Env, appCfg.LogLevel)
 
 	storage, err := storage.Init(appCfg.StoragePath)
@@ -32,7 +54,6 @@ func main() {
 
 	ctx, cancel := signal.NotifyContext(context.Background(), syscall.SIGINT, syscall.SIGTERM)
 	defer cancel()
-	serverCfg := config.ServerConfigMust()
 	Server := server.NewHTTPServer(serverCfg, nil, router, storage)
 	if err := Server.Run(ctx); err != nil {
 		logger.Error("Server error", log.ErrorAttr("err", err))

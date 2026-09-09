@@ -8,8 +8,7 @@ import (
 
 type AppConfig struct {
 	Env string `envconfig:"ENV" default:"prod"`
-	Addr string `envconfig:"HTTP_ADDR" default:":8080"`
-	StoragePath string `envconfig:"STORAGE_PATH" requered:"true"`
+	StoragePath string `envconfig:"STORAGE_PATH" required:"true"`
 	LogLevel string `envconfig:"LOG_LEVEL" default:"info"`
 }
 
@@ -17,7 +16,7 @@ type AppConfig struct {
 func newAppConfig() (*AppConfig, error) {
 	var s AppConfig
 	if err := envconfig.Process("", &s); err != nil {
-		return nil, fmt.Errorf("Failed to procces environment variables")
+		return nil, fmt.Errorf("Failed to process environment variables: %v", err)
 	}
 	return &s, nil
 }
@@ -26,7 +25,7 @@ func newAppConfig() (*AppConfig, error) {
 func AppConfigMust() *AppConfig {
 	config, err := newAppConfig()
 	if err != nil {
-		panic("error with processing env")
+		panic(err)
 	}
 	return config
 }

@@ -13,7 +13,7 @@ type Storage struct {
 }
 
 func Init(path string) (*Storage, error) {
-	db, err := sql.Open("sqlite3", "./database.db")
+	db, err := sql.Open("sqlite3", path)
 	if err != nil {
 		return nil, fmt.Errorf("Error with Open sqlite file: %w", err)
 	}
