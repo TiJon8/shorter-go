@@ -9,6 +9,7 @@ import (
 	"time"
 
 	"github.com/TiJon8/shorter-go/pkg/config"
+	"github.com/TiJon8/shorter-go/pkg/logger"
 	"github.com/TiJon8/shorter-go/pkg/storage"
 
 	"github.com/go-chi/chi/v5"
@@ -22,11 +23,17 @@ type HTTPServer struct {
 	storage *storage.Storage
 }
 
-func NewHTTPServer(cfg *config.ServerConfig, log *slog.Logger, router *chi.Mux, st *storage.Storage) *HTTPServer {
+func NewHTTPServer(cfg *config.ServerConfig, log *logger.Logger, router *chi.Mux, st *storage.Storage) *HTTPServer {
+	var l *slog.Logger
+	if log == nil {
+		l = logger.DefaultLogger
+	} else {
+		l = log.Logger
+	}
 	return  &HTTPServer{
 		config: cfg,
 		mux: router,
-		logger: log,
+		logger: l,
 		storage: st,
 	}
 }
