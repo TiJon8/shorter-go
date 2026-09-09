@@ -33,7 +33,7 @@ func main() {
 	ctx, cancel := signal.NotifyContext(context.Background(), syscall.SIGINT, syscall.SIGTERM)
 	defer cancel()
 	serverCfg := config.ServerConfigMust()
-	Server := server.NewHTTPServer(serverCfg, logger, router, storage)
+	Server := server.NewHTTPServer(serverCfg, nil, router, storage)
 	if err := Server.Run(ctx); err != nil {
 		logger.Error("Server error", log.ErrorAttr("err", err))
 	}

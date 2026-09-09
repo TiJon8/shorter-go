@@ -44,5 +44,5 @@ func NewLogger(env string, level string) *Logger {
 }
 
 var (
-	DefaultLogger = new(slog.Logger)
+	DefaultLogger = slog.New(slog.NewJSONHandler(os.Stdout, &slog.HandlerOptions{Level: slog.LevelInfo}))
 )
