@@ -7,11 +7,11 @@ import (
 	"os/signal"
 	"syscall"
 
-	"github.com/TiJon8/shorter-go/internal/config"
-	"github.com/TiJon8/shorter-go/internal/features"
-	log "github.com/TiJon8/shorter-go/internal/logger"
-	"github.com/TiJon8/shorter-go/internal/server"
-	"github.com/TiJon8/shorter-go/internal/storage"
+	"github.com/TiJon8/shorter-go/pkg/config"
+	"github.com/TiJon8/shorter-go/pkg/features"
+	log "github.com/TiJon8/shorter-go/pkg/logger"
+	"github.com/TiJon8/shorter-go/pkg/server"
+	"github.com/TiJon8/shorter-go/pkg/storage"
 )
 
 

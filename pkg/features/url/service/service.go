@@ -2,7 +2,7 @@ package service
 
 import (
 	"errors"
-	"github.com/TiJon8/shorter-go/internal/storage"
+	"github.com/TiJon8/shorter-go/pkg/storage"
 	"math/rand"
 	"time"
 )

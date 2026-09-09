@@ -1,12 +1,12 @@
 package features
 
 import (
-	transport "github.com/TiJon8/shorter-go/internal/features/url/http"
-	"github.com/TiJon8/shorter-go/internal/features/url/service"
-	"github.com/TiJon8/shorter-go/internal/logger"
-	"github.com/TiJon8/shorter-go/internal/storage"
+	transport "github.com/TiJon8/shorter-go/pkg/features/url/http"
+	"github.com/TiJon8/shorter-go/pkg/features/url/service"
+	"github.com/TiJon8/shorter-go/pkg/logger"
+	"github.com/TiJon8/shorter-go/pkg/storage"
 
-	mid "github.com/TiJon8/shorter-go/internal/server/middleware"
+	mid "github.com/TiJon8/shorter-go/pkg/server/middleware"
 	"github.com/go-chi/chi/v5"
 	"github.com/go-chi/chi/v5/middleware"
 )
