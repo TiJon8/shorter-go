@@ -15,7 +15,7 @@ import (
 func InitRouter(storage *storage.Storage, l *logger.Logger) *chi.Mux {
 	router := chi.NewRouter()
 	router.Use(middleware.RequestID)
-	router.Use(mid.Logger(l.Logger))
+	router.Use(mid.Logger(l))
 	router.Use(middleware.Recoverer)
 
 	router.Get("/ping", Ping)

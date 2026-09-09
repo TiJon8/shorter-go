@@ -19,13 +19,16 @@ var (
 type Middleware func(next http.Handler) http.Handler
 
 
-func Logger(log *slog.Logger) Middleware {
+func Logger(l *logger.Logger) Middleware {
 	return func(next http.Handler) http.Handler {
 		return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-			if log == nil {
+			var log *slog.Logger
+			if l == nil {
 				log = logger.DefaultLogger
+			} else {
+				log = l.Logger
 			}
-			log := log.With(slog.String("component", "middleware/logger"))
+			log = log.With(slog.String("component", "middleware/logger"))
 			log.Info("Middleware logger has enabled")
 
 			entry := log.With(
