@@ -1,11 +1,13 @@
 package server
 
 import (
+	"bytes"
 	"context"
 	"errors"
 	"fmt"
 	"log/slog"
 	"net/http"
+	"os"
 	"time"
 
 	"github.com/TiJon8/shorter-go/pkg/config"
@@ -50,6 +52,9 @@ func (s *HTTPServer) Run(ctx context.Context) error {
 	go func() {
 		s.logger.Warn("Server has started on", slog.String("port", s.config.Addr))
 
+		pid := os.Getpid()
+		WritePID(fmt.Sprintf("%d", pid))
+
 		err := server.ListenAndServe()
 
 		if !errors.Is(err, http.ErrServerClosed) {
@@ -74,4 +79,15 @@ func (s *HTTPServer) Run(ctx context.Context) error {
 		s.logger.Warn("Server succesfully was stopped", slog.Duration("for", time.Since(now)))
 	}
 	return nil
+}
+
+func WritePID(pid string) {
+	f, err := os.Create("pid")
+	if err != nil {
+		return
+	}
+	defer f.Close()
+	buf := new(bytes.Buffer)
+	buf.WriteString("pid:");buf.WriteString(pid)
+	f.Write(buf.Bytes())
 }
