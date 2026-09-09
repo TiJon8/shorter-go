@@ -8,6 +8,7 @@ import (
 	"log/slog"
 	"net/http"
 	"os"
+	"strings"
 	"time"
 
 	"github.com/TiJon8/shorter-go/pkg/config"
@@ -53,11 +54,16 @@ func (s *HTTPServer) Run(ctx context.Context) error {
 		s.logger.Warn("Server has started on", slog.String("port", s.config.Addr))
 
 		pid := os.Getpid()
-		WritePID(fmt.Sprintf("%d", pid))
+		cpid := fmt.Sprintf("%d", pid)
+		lastPid := readPID()
+		if lastPid != cpid {
+			WritePID(cpid)
+		}
 
 		err := server.ListenAndServe()
 
 		if !errors.Is(err, http.ErrServerClosed) {
+			WritePID(lastPid)
 			ch <- err
 		}
 	}()
@@ -79,6 +85,18 @@ func (s *HTTPServer) Run(ctx context.Context) error {
 		s.logger.Warn("Server succesfully was stopped", slog.Duration("for", time.Since(now)))
 	}
 	return nil
+}
+
+func readPID() string {
+	of, err := os.Open("pid")
+	if err != nil {
+		return ""
+	}
+	defer of.Close()
+	buf := new(bytes.Buffer)
+	buf.ReadFrom(of)
+	oldPid := strings.Split(buf.String(), ":")
+	return oldPid[1]
 }
 
 func WritePID(pid string) {
