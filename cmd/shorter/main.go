@@ -20,11 +20,15 @@ var (
 	storagePath = flag.String("storage-path", "./database.db", "path for sqlite .db file")
 	logLevel = flag.String("log-level", "info", "minimum level for logger")
 	env = flag.String("env", "dev", "env mode")
+	help = flag.Bool("help", false, "show usage")
 )
 
 func main() {
 	flag.Parse()
-
+	if *help {
+		flag.Usage()
+		return
+	}
 	appCfg := new(config.AppConfig)
 	serverCfg := new(config.ServerConfig)
 	if *useEnv {
