@@ -42,3 +42,7 @@ func NewLogger(env string, level string) *Logger {
 	}
 	return &Logger{logger}
 }
+
+var (
+	DefaultLogger = new(slog.Logger)
+)

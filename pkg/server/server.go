@@ -4,11 +4,12 @@ import (
 	"context"
 	"errors"
 	"fmt"
-	"github.com/TiJon8/shorter-go/pkg/config"
-	"github.com/TiJon8/shorter-go/pkg/storage"
 	"log/slog"
 	"net/http"
 	"time"
+
+	"github.com/TiJon8/shorter-go/pkg/config"
+	"github.com/TiJon8/shorter-go/pkg/storage"
 
 	"github.com/go-chi/chi/v5"
 )

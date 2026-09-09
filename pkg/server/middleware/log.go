@@ -6,6 +6,7 @@ import (
 	"net/http"
 	"time"
 
+	"github.com/TiJon8/shorter-go/pkg/logger"
 	"github.com/go-chi/chi/v5/middleware"
 )
 
@@ -21,6 +22,9 @@ type Middleware func(next http.Handler) http.Handler
 func Logger(log *slog.Logger) Middleware {
 	return func(next http.Handler) http.Handler {
 		return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+			if log == nil {
+				log = logger.DefaultLogger
+			}
 			log := log.With(slog.String("component", "middleware/logger"))
 			log.Info("Middleware logger has enabled")
 

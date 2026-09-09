@@ -9,8 +9,8 @@ import (
 
 
 type ServerConfig struct {
-	Addr string `envconfig:"ADDR" required:"true"`
-	GracefullShutdownDuration time.Duration `envconfig:"GRACEFULL_SHUTDOWNN_DURATION"`
+	Addr string `envconfig:"ADDR" required:"true" default:":8080"`
+	GracefullShutdownDuration time.Duration `envconfig:"GRACEFULL_SHUTDOWNN_DURATION" default:"30s"`
 }
 
 
